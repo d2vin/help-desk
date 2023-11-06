@@ -1,3 +1,4 @@
+import { type Ticket } from "@prisma/client";
 import Link from "next/link";
 import StatusForm from "~/components/status-form";
 import { getServerAuthSession } from "~/server/auth";
@@ -19,7 +20,7 @@ const Inbox = async () => {
   const session = await getServerAuthSession();
   if (!session?.user)
     return (
-      <div className="min-h-screen bg-neutral-950 p-16 flex w-full justify-center">
+      <div className="flex min-h-screen w-full justify-center bg-neutral-950 p-16">
         <Link href="/">
           <button className="rounded-lg bg-indigo-500 p-4 text-white hover:bg-indigo-600">
             Sign in to access inbox
@@ -29,6 +30,8 @@ const Inbox = async () => {
     );
   const inboundTickets = await api.ticket.getInboundTickets.query();
   const tickets = await api.ticket.getTickets.query();
+  const statusClassName = (project: Ticket) =>
+    statuses[project.status as ProjectStatus];
 
   return (
     <div className="min-h-screen bg-neutral-950 p-8">
@@ -56,7 +59,7 @@ const Inbox = async () => {
                 <p
                   className={classNames(
                     // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-                    statuses[project.status],
+                    statusClassName(project),
                     "mt-0.5 whitespace-nowrap rounded-md px-1.5 py-0.5 text-xs font-medium ring-1 ring-inset",
                   )}
                 >
@@ -109,7 +112,7 @@ const Inbox = async () => {
                 <p
                   className={classNames(
                     // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-                    statuses[project.status],
+                    statusClassName(project),
                     "mt-0.5 whitespace-nowrap rounded-md px-1.5 py-0.5 text-xs font-medium ring-1 ring-inset",
                   )}
                 >

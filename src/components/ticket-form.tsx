@@ -25,6 +25,7 @@ import {
 import { Textarea } from "../components/ui/textarea";
 import { Input } from "../components/ui/input";
 import { api } from "~/trpc/react";
+import { toast } from "./ui/use-toast";
 
 const formSchema = z.object({
   name: z.string().min(2, {
@@ -61,7 +62,6 @@ const TicketForm: React.FC<CreateTicketProps> = ({ users }) => {
       router.refresh();
     },
   });
-  // 1. Define your form.
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -72,13 +72,17 @@ const TicketForm: React.FC<CreateTicketProps> = ({ users }) => {
     },
   });
 
-  // 2. Define a submit handler.
   function onSubmit(values: z.infer<typeof formSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values);
     createTicket.mutate(values);
-    // console.log(values);
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+    toast({
+      title: "You submitted the following values:",
+      description: (
+        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
+          <code className="text-white">{JSON.stringify(values, null, 2)}</code>
+        </pre>
+      ),
+    });
   }
 
   return (
