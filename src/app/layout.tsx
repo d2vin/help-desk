@@ -6,6 +6,7 @@ import { headers } from "next/headers";
 import { TRPCReactProvider } from "~/trpc/react";
 import Sidebar from "~/components/sidebar";
 import Navbar from "~/components/navbar";
+import { Toaster } from "~/components/ui/toaster";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -32,9 +33,10 @@ export default function RootLayout({
               <Sidebar />
             </div>
             <main className="md:pl-72">
-              <div className="fixed top-0 z-40 h-16 w-full bg-black backdrop-blur"></div>
+              <div className="fixed top-0 z-40 h-16 w-full bg-black backdrop-blur" />
               <Navbar />
               {children}
+              <Toaster />
             </main>
           </div>
         </TRPCReactProvider>

@@ -15,13 +15,23 @@ datasource db {
 }
 
 model Ticket {
-    id        Int      @id @default(autoincrement())
-    name      String
+    id          Int    @id @default(autoincrement())
+    name        String
+    email       String
+    description String
+
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 
-    createdBy   User   @relation(fields: [createdById], references: [id])
+    createdBy   User   @relation(name: "CreatedByUser", fields: [createdById], references: [id])
     createdById String
+
+    recipient   User   @relation(name: "RecipientUser", fields: [recipientId], references: [id])
+    recipientId String
+
+    replies Reply[] @relation(name: "ReplyToTicket")
+
+    status String @default("New")
 
     @@index([name])
 }
@@ -54,14 +64,17 @@ model Session {
 }
 
 model User {
-    id            String    @id @default(cuid())
-    name          String?
-    email         String?   @unique
-    emailVerified DateTime?
-    image         String?
-    accounts      Account[]
-    sessions      Session[]
-    Tickets       Ticket[]
+    id             String    @id @default(cuid())
+    name           String?
+    email          String?   @unique
+    emailVerified  DateTime?
+    image          String?
+    recipient      Boolean   @default(false)
+    accounts       Account[]
+    sessions       Session[]
+    tickets        Ticket[]  @relation(name: "CreatedByUser")
+    inboundTickets Ticket[]  @relation(name: "RecipientUser")
+    replies        Reply[]   @relation(name: "ReplyByUser")
 }
 
 model VerificationToken {
@@ -70,4 +83,15 @@ model VerificationToken {
     expires    DateTime
 
     @@unique([identifier, token])
+}
+
+model Reply {
+    id          Int      @id @default(autoincrement())
+    message     String
+    ticket      Ticket   @relation(name: "ReplyToTicket", fields: [ticketId], references: [id])
+    ticketId    Int
+    createdBy   User     @relation(name: "ReplyByUser", fields: [createdById], references: [id])
+    createdById String
+    createdAt   DateTime @default(now())
+    updatedAt   DateTime @updatedAt
 }

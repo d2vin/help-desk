@@ -1,28 +1,28 @@
-'use client'
+"use client";
 
 import Link from "next/link";
 import Image from "next/image";
 import { cn } from "../utils";
-import { LayoutDashboard, HomeIcon, User2Icon } from "lucide-react";
+import { InboxIcon, MailIcon, User2Icon } from "lucide-react";
 import { usePathname } from "next/navigation";
 
 const routes = [
   {
-    label: "Ask a question",
-    icon: LayoutDashboard,
-    href: "/feed",
+    label: "Send a ticket",
+    icon: MailIcon,
+    href: "/",
     color: "text-neutral-500",
   },
   {
-    label: "Home",
-    icon: HomeIcon,
-    href: "/home",
+    label: "Ticket inbox",
+    icon: InboxIcon,
+    href: "/inbox",
     color: "text-neutral-500",
   },
   {
-    label: "Sign in",
+    label: "Profile",
     icon: User2Icon,
-    href: "/search",
+    href: "/profile",
     color: "text-neutral-500",
   },
 ];
@@ -30,7 +30,7 @@ const routes = [
 const Sidebar = () => {
   const pathname = usePathname();
   return (
-    <div className="flex h-full flex-col space-y-4 bg-black py-4 text-white border-r-2 border-neutral-400/10">
+    <div className="flex h-full flex-col space-y-4 border-r-2 border-neutral-400/10 bg-black py-4 text-white">
       <div className="flex-1 px-3 py-2">
         <Link href="/">
           <div className="mb-14 flex items-center pl-3">
@@ -42,8 +42,9 @@ const Sidebar = () => {
         </Link>
         <div className="space-y-1">
           {routes.map((route) => (
-            <div
-              className={`
+            <Link key={route.href} href={route.href}>
+              <div
+                className={`
                 group flex w-full cursor-pointer justify-start rounded-xl p-3 text-sm font-medium transition hover:bg-white/10 hover:text-white
                 ${
                   pathname === route.href
@@ -51,15 +52,14 @@ const Sidebar = () => {
                     : "text-zinc-400"
                 }
               `}
-              key={route.href}
-            >
-              <Link key={route.href} href={route.href}>
+                key={route.href}
+              >
                 <div className="flex flex-1 items-center">
                   <route.icon className={cn("mr-3 h-5 w-5", route.color)} />
                   {route.label}
                 </div>
-              </Link>
-            </div>
+              </div>
+            </Link>
           ))}
         </div>
       </div>
