@@ -1,6 +1,6 @@
 # Help Desk
 
-Welcome to Help Desk! This application is designed to streamline support ticket management, making it easier for both end users and support staff to interact seamlessly. Whether you're a customer seeking assistance or a support agent handling requests, our app offers a user-friendly experience.
+Welcome to Help Desk! This app is designed to streamline support ticket management, making it easier for both end users and support staff to interact seamlessly. Whether you're a customer seeking assistance or a support agent handling requests, our app offers a user-friendly experience.
 
 ## Technologies
 
